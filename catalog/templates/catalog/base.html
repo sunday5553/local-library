@@ -1,0 +1,78 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/bulma.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/debug.cs' %}">
+
+    {% block title %}
+    <title>Local Library</title>
+
+    {% endblock title %}
+</head>
+<body>
+    {% block sidebar %}
+    <section class="columns">
+      <section class="column is-4">
+        <p class = 'menu-label is-size-5'>Library Information</p>
+        <ul class="menu-list">
+          <li><a href="{% url 'catalog:index' %}">Home</a></li>
+          <li><a href="{% url 'catalog:books' %}">All books</a></li>
+          <li><a href="{% url 'catalog:authors' %}">All authors</a></li>
+        </ul>
+
+          <p class="menu-label is-size-5">User Information</p>
+          <ul class="menu-list">
+            {% if user.is_authenticated %}
+              <li><a href="">Welcome <em><strong>{{user.username}}!</strong></em></a></li>
+              <li><a href="{% url 'catalog:my-borrowed' %}">My books</a></li>
+              <li><a href="{% url 'logout' %}?next={{request.path}}">Logout</a></li>
+              {% else %}
+              <li><a href="{% url 'login' %}?next={{request.path}}">Login</a></li>
+          {% endif %}
+          </ul>
+          
+        
+      </section>
+      <section class="column m-6 is-8" >
+        {% block body %}
+                  
+                </section>
+        {% endblock body %}
+      </section>
+    {% endblock sidebar %}
+  </section>
+  <section class="columns">
+    <section class="column is-offset-4"></section>
+    <section class="column is-4">
+      {% block pagination %}
+    {% if is_paginated %}
+       <section class="pagination is-rounded is-centered" style="max-width: 300px; margin-left: 20px">
+            {% if page_obj.has_previous %}
+                <a  class="pagination-previous" href="{{request.path}}?page={{page_obj.previous_page_number}}"> Previous</a>
+            {% endif %}
+        Page <span class="pagination-link has-text-success ">{{page_obj.number}}</span> of <span class="pagination-link">{{page_obj.paginator.num_pages}}
+        </span>
+            {% if page_obj.has_next %}
+                <a class="pagination-next has-text-success" href="{{request.path}}?page={{page_obj.next_page_number}}">Next</a>
+            {% endif %}
+          </section> 
+    {% endif %}
+  {% endblock pagination %}
+    </section>
+    <section class="'column is-offset-4"></section>
+  </section>
+
+</body>
+
+</html>
+
+
+
+
+

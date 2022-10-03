@@ -1,0 +1,10 @@
+{% extends 'catalog/base.html' %}
+{% block body %}
+<h1 class="title is-1">All Authors</h1>
+<ul>
+    {% for author in author_list %}
+        <li><a href="{{author.get_absolute_url}}">{{author.last_name}}</a></li>
+    {% endfor %}
+</ul>
+  
+{% endblock body %}
